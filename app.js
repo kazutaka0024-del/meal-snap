@@ -30,15 +30,36 @@ cameraInput.addEventListener("change", async (event) => {
 
 async function analyzeFood(file) {
 
-    result.textContent = "AI解析中...";
+    result.textContent = "AI解析準備中...";
 
     const imageBase64 = await fileToBase64(file);
 
-    // Gemini API呼び出し
+    console.log("画像Base64取得成功");
+    console.log(imageBase64.substring(0,50));
+
+    result.textContent = "画像取得完了";
 
 }
 
 
 function roundCalories(calories) {
     return Math.round(calories / 25) * 25;
+}
+
+function fileToBase64(file) {
+
+    return new Promise((resolve, reject) => {
+
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            resolve(reader.result.split(",")[1]);
+        };
+
+        reader.onerror = reject;
+
+        reader.readAsDataURL(file);
+
+    });
+
 }
