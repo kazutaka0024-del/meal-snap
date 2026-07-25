@@ -53,7 +53,7 @@ async function analyzeFood(file) {
                 {
                     parts: [
                         {
-                            text: "この食事写真を解析してください。料理名を教えてください。"
+                            text: "この食事写真の総カロリーを推定してください。数値だけを返してください。単位や説明文は不要です。"
                         },
                         {
                             inline_data: {
