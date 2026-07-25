@@ -2,7 +2,6 @@ const cameraButton = document.getElementById("cameraButton");
 const cameraInput = document.getElementById("cameraInput");
 const preview = document.getElementById("preview");
 const result = document.getElementById("result");
-//const GEMINI_API_KEY = "";
 
 cameraButton.addEventListener("click", () => {
     cameraInput.click();
