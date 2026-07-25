@@ -35,7 +35,7 @@ async function analyzeFood(file) {
     const imageBase64 = await fileToBase64(file);
 
     const url =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key="
       + GEMINI_API_KEY;
 
 
@@ -70,14 +70,18 @@ async function analyzeFood(file) {
     });
 
 
-    const data = await response.json();
+const data = await response.json();
 
-    console.log(data);
+console.log(data);
 
-    const text =
-        data.candidates[0].content.parts[0].text;
+if (!response.ok) {
+    result.textContent = data.error.message;
+    return;
+}
 
-    result.textContent = text;
+const text = data.candidates[0].content.parts[0].text;
+
+result.textContent = text;
 
 }
 
@@ -93,7 +97,8 @@ function fileToBase64(file) {
         const reader = new FileReader();
 
         reader.onload = () => {
-            resolve(reader.result.split(",")[1]);
+           const base64 = reader.result.split(",")[1];
+           resolve(base64);
         };
 
         reader.onerror = reject;
