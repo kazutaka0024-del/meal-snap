@@ -1,4 +1,4 @@
-alert("app.js v4 読込成功");
+alert("app.js v5 読込成功");
 
 const cameraButton = document.getElementById("cameraButton");
 const cameraInput = document.getElementById("cameraInput");
