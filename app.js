@@ -2,6 +2,7 @@ const cameraButton = document.getElementById("cameraButton");
 const cameraInput = document.getElementById("cameraInput");
 const preview = document.getElementById("preview");
 const result = document.getElementById("result");
+//const GEMINI_API_KEY = "";
 
 cameraButton.addEventListener("click", () => {
     cameraInput.click();
@@ -30,14 +31,51 @@ cameraInput.addEventListener("change", async (event) => {
 
 async function analyzeFood(file) {
 
-    result.textContent = "AI解析準備中...";
+    result.textContent = "AI解析中...";
 
     const imageBase64 = await fileToBase64(file);
 
-    console.log("画像Base64取得成功");
-    console.log(imageBase64.substring(0,50));
+    const url =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
+      + GEMINI_API_KEY;
 
-    result.textContent = "画像取得完了";
+
+    const response = await fetch(url, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            contents: [
+                {
+                    parts: [
+                        {
+                            text: "この食事写真を解析してください。料理名を教えてください。"
+                        },
+                        {
+                            inline_data: {
+                                mime_type: file.type,
+                                data: imageBase64
+                            }
+                        }
+                    ]
+                }
+            ]
+
+        })
+
+    });
+
+
+    const data = await response.json();
+
+    console.log(data);
+
+    result.textContent = "解析完了";
 
 }
 
