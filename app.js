@@ -1,3 +1,5 @@
+alert("app.js v4 読込成功");
+
 const cameraButton = document.getElementById("cameraButton");
 const cameraInput = document.getElementById("cameraInput");
 const preview = document.getElementById("preview");
