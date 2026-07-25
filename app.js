@@ -74,7 +74,10 @@ async function analyzeFood(file) {
 
     console.log(data);
 
-    result.textContent = "解析完了";
+    const text =
+        data.candidates[0].content.parts[0].text;
+
+    result.textContent = text;
 
 }
 
