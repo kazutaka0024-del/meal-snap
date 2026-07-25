@@ -1,5 +1,3 @@
-alert("app.js v5 読込成功");
-
 const cameraButton = document.getElementById("cameraButton");
 const cameraInput = document.getElementById("cameraInput");
 const preview = document.getElementById("preview");
@@ -23,12 +21,6 @@ cameraInput.addEventListener("change", async (event) => {
 
     capturedFile = file;
 
-    console.log("画像形式:", file.type);
-    console.log("画像サイズ:", file.size);
-
-    result.textContent =
-    "形式:" + file.type + " サイズ:" + file.size;
-
     const imageUrl = URL.createObjectURL(file);
 
     preview.src = imageUrl;
@@ -47,16 +39,12 @@ async function analyzeFood(file) {
 
     result.textContent = "AI解析中...";
 
-    console.log("解析開始", file);
-
 
     const imageBase64 = await fileToBase64(file);
 
     const url =
        "https://meal-snap-api.kazutaka0024.workers.dev/";
   
-    console.log("Gemini送信前");
-
 
     const response = await fetch(url, {
 
@@ -90,8 +78,6 @@ async function analyzeFood(file) {
 
 
 const data = await response.json();
-
-console.log(data);
 
 if (!response.ok) {
     result.textContent = data.error.message;
