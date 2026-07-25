@@ -53,9 +53,8 @@ async function analyzeFood(file) {
     const imageBase64 = await fileToBase64(file);
 
     const url =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key="
-      + GEMINI_API_KEY;
-
+       "https://meal-snap-api.kazutaka0024.workers.dev/";
+  
     console.log("Gemini送信前");
 
 
