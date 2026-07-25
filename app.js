@@ -2,6 +2,9 @@ const cameraButton = document.getElementById("cameraButton");
 const cameraInput = document.getElementById("cameraInput");
 const preview = document.getElementById("preview");
 const result = document.getElementById("result");
+const savePhotoButton = document.getElementById("savePhotoButton");
+
+let capturedFile = null;
 
 cameraButton.addEventListener("click", () => {
     cameraInput.click();
@@ -15,6 +18,8 @@ cameraInput.addEventListener("change", async (event) => {
     if (!file) {
         return;
     }
+
+    capturedFile = file;
 
     const imageUrl = URL.createObjectURL(file);
 
@@ -71,6 +76,9 @@ async function analyzeFood(file) {
 
 
 const data = await response.json();
+const calories = Number(data.candidates[0].content.parts[0].text);
+
+result.textContent = roundCalories(calories) + " kcal";
 
 console.log(data);
 
