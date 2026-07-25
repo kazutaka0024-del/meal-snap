@@ -80,6 +80,8 @@ const calories = Number(data.candidates[0].content.parts[0].text);
 
 result.textContent = roundCalories(calories) + " kcal";
 
+savePhotoButton.style.display = "block";
+
 console.log(data);
 
 if (!response.ok) {
@@ -116,3 +118,32 @@ function fileToBase64(file) {
     });
 
 }
+
+savePhotoButton.addEventListener("click", async () => {
+
+    if (!capturedFile) {
+        return;
+    }
+
+    const shareFile = new File(
+        [capturedFile],
+        "meal-photo.jpg",
+        {
+            type: capturedFile.type
+        }
+    );
+
+    if (navigator.share && navigator.canShare({ files: [shareFile] })) {
+
+        await navigator.share({
+            files: [shareFile],
+            title: "食事写真"
+        });
+
+    } else {
+
+        alert("この端末では写真保存に対応していません");
+
+    }
+
+});
