@@ -21,6 +21,12 @@ cameraInput.addEventListener("change", async (event) => {
 
     capturedFile = file;
 
+    console.log("画像形式:", file.type);
+    console.log("画像サイズ:", file.size);
+
+    result.textContent =
+    "形式:" + file.type + " サイズ:" + file.size;
+
     const imageUrl = URL.createObjectURL(file);
 
     preview.src = imageUrl;
@@ -35,13 +41,20 @@ cameraInput.addEventListener("change", async (event) => {
 
 async function analyzeFood(file) {
 
+ try {
+
     result.textContent = "AI解析中...";
+
+    console.log("解析開始", file);
+
 
     const imageBase64 = await fileToBase64(file);
 
     const url =
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key="
       + GEMINI_API_KEY;
+
+    console.log("Gemini送信前");
 
 
     const response = await fetch(url, {
@@ -76,11 +89,6 @@ async function analyzeFood(file) {
 
 
 const data = await response.json();
-const calories = Number(data.candidates[0].content.parts[0].text);
-
-result.textContent = roundCalories(calories) + " kcal";
-
-savePhotoButton.style.display = "block";
 
 console.log(data);
 
@@ -91,7 +99,16 @@ if (!response.ok) {
 
 const text = data.candidates[0].content.parts[0].text;
 
-result.textContent = text;
+const calories = Number(text);
+
+result.textContent = roundCalories(calories) + " kcal";
+
+savePhotoButton.style.display = "block";
+
+    } catch (error) {
+
+        result.textContent = "エラー：" + error.message;
+    }
 
 }
 
