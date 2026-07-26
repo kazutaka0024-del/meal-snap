@@ -358,20 +358,17 @@ function loadHistory(){
                  icon = "🍱";
             }
 
-        html += `
-        <div class="meal-card">
-          <h4>${icon} ${type}</h4>
-        `;
 
             const list =
             dayMeals.filter(
                 m => m.mealType === type
             );
 
+            html += `
+             <div class="meal-card">
+             <h4>${icon} ${type}</h4>
+            `;
 
-            html +=
-            `
-            <div class="meal-card">
 
             if(list.length){
 

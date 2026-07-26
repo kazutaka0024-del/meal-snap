@@ -58,7 +58,7 @@ button {
 
 /* 朝昼夕タイトル */
 .meal-card h4{
-    margin-top:0;
+    margin:0 0 10px;
 }
 
 /* 一品 */
@@ -80,12 +80,14 @@ button {
 .meal-calories{
     white-space:nowrap;
     font-weight:bold;
+    color:#444;
 }
 
 /* 未登録 */
 .notRegistered{
     color:#999;
     font-style:italic;
+    margin:0;    
 }
 
 .meal-total{
@@ -102,8 +104,9 @@ button {
 .day-total{
     display:flex;
     justify-content:space-between;
-    font-weight:bold;
+    align-items:center;
     margin-top:10px;
     padding-top:10px;
     border-top:2px solid #ddd;
+    font-weight:bold;
 }
