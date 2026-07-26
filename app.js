@@ -345,6 +345,23 @@ function loadHistory(){
 
         types.forEach(type=>{
 
+            let icon = "";
+
+            switch(type){
+                case "朝食":
+                 icon = "🍳";
+                 break;
+                case "昼食":
+                 icon = "🍜";
+                 break;
+                default:
+                 icon = "🍱";
+            }
+
+        html += `
+        <div class="meal-card">
+          <h4>${icon} ${type}</h4>
+        `;
 
             const list =
             dayMeals.filter(
@@ -355,9 +372,6 @@ function loadHistory(){
             html +=
             `
             <div class="meal-card">
-            <h4>${type}</h4>
-            `;
-
 
             if(list.length){
 
@@ -381,8 +395,12 @@ function loadHistory(){
 
 
                 html +=
-                `<b>合計 ${total} kcal</b>`;
-
+                `
+                 <div class="meal-row meal-total">
+                 <span>合計</span>
+                 <span>${total} kcal</span>
+                 </div>
+                `;
 
                 dayTotal += total;
 
@@ -407,11 +425,12 @@ function loadHistory(){
         html +=
         `
         <hr>
-        <strong>
-        🔥 1日合計 ${dayTotal} kcal
-        </strong>
+        <div class="day-total">
+         🔥 1日合計
+        <span>${dayTotal} kcal</span>
+       </div>
 
-        </div>
+     </div>
         `;
 
 
