@@ -147,6 +147,8 @@ saveMealHistory(
     calories
 );
 
+loadHistory();
+
 savePhotoButton.style.display = "block";
 
 cameraButton.disabled = false;
@@ -279,6 +281,8 @@ function saveMealHistory(food, calories){
 
 function loadHistory(){
 
+    console.log("loadHistory実行");
+
     const meals =
     JSON.parse(
         localStorage.getItem("meals") || "[]"
@@ -398,3 +402,6 @@ function loadHistory(){
     history.innerHTML = html;
 
 }
+
+alert("loadHistory呼び出し");
+loadHistory();
