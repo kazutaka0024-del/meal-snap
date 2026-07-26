@@ -3,6 +3,7 @@ const cameraInput = document.getElementById("cameraInput");
 const preview = document.getElementById("preview");
 const result = document.getElementById("result");
 const savePhotoButton = document.getElementById("savePhotoButton");
+const history = document.getElementById("history");
 
 let capturedFile = null;
 let isAnalyzing = false;
@@ -69,7 +70,18 @@ async function analyzeFood(file) {
                 {
                     parts: [
                         {
-                            text: "この食事写真の総カロリーを推定してください。数値だけを返してください。単位や説明文は不要です。"
+                          text:
+                            `
+                            この食事写真を解析してください。
+                            以下のJSON形式だけで返してください。
+
+                            {
+                             "food":"料理名",
+                             "calories":数値
+                            }
+
+                            説明文は禁止です。
+                            `
                         },
                         {
                             inline_data: {
@@ -97,11 +109,22 @@ if (!response.ok) {
     return;
 }
 
-const text = data.candidates[0].content.parts[0].text;
+const text =
+data.candidates[0].content.parts[0].text;
 
-const calories = Number(text);
+const meal =
+JSON.parse(text);
 
-result.textContent = roundCalories(calories) + " kcal";
+const calories =
+roundCalories(meal.calories);
+
+result.textContent =
+meal.food + " : " + calories + " kcal";
+
+saveMealHistory(
+    meal.food,
+    calories
+);
 
 savePhotoButton.style.display = "block";
 
@@ -143,6 +166,25 @@ function fileToBase64(file) {
 
 }
 
+function getMealType(){
+
+ const hour =
+ new Date().getHours();
+
+
+ if(hour < 11){
+    return "朝食";
+ }
+
+ if(hour < 16){
+    return "昼食";
+ }
+
+ return "夕食";
+
+}
+
+
 savePhotoButton.addEventListener("click", async () => {
 
     if (!capturedFile) {
@@ -171,3 +213,167 @@ savePhotoButton.addEventListener("click", async () => {
     }
 
 });
+
+function saveMealHistory(food, calories){
+
+    const meals =
+        JSON.parse(
+            localStorage.getItem("meals") || "[]"
+        );
+
+
+    const now = new Date();
+
+
+    meals.push({
+
+        date:
+        now.toISOString().slice(0,10),
+
+
+        time:
+        now.toTimeString().slice(0,5),
+
+
+        mealType:
+        getMealType(),
+
+
+        food:
+        food,
+
+
+        calories:
+        calories
+
+    });
+
+
+    localStorage.setItem(
+        "meals",
+        JSON.stringify(meals)
+    );
+
+}
+
+function loadHistory(){
+
+    const meals =
+    JSON.parse(
+        localStorage.getItem("meals") || "[]"
+    );
+
+
+    const dates =
+    [...new Set(
+        meals.map(m => m.date)
+    )];
+
+
+    // 古い順
+    dates.sort();
+
+
+    let html = "";
+
+
+    dates.forEach(date => {
+
+
+        const dayMeals =
+        meals.filter(
+            m => m.date === date
+        );
+
+
+        html += `
+        <div class="day">
+
+        <h3>
+        📅 ${date}
+        </h3>
+        `;
+
+
+        const types =
+        ["朝食","昼食","夕食"];
+
+
+        let dayTotal = 0;
+
+
+        types.forEach(type=>{
+
+
+            const list =
+            dayMeals.filter(
+                m => m.mealType === type
+            );
+
+
+            html +=
+            `<h4>${type}`;
+
+
+            if(list.length){
+
+                let total = 0;
+
+
+                list.forEach(meal=>{
+
+                    total += meal.calories;
+
+
+                    html +=
+                    `
+                    <p>
+                    ・${meal.food}
+                    ${meal.calories} kcal
+                    </p>
+                    `;
+
+                });
+
+
+                html +=
+                `<b>合計 ${total} kcal</b>`;
+
+
+                dayTotal += total;
+
+
+            }else{
+
+                html +=
+                `
+                <p>
+                未登録
+                </p>
+                `;
+
+            }
+
+
+            html += "</h4>";
+
+        });
+
+
+        html +=
+        `
+        <hr>
+        <strong>
+        🔥 1日合計 ${dayTotal} kcal
+        </strong>
+
+        </div>
+        `;
+
+
+    });
+
+
+    history.innerHTML = html;
+
+}
