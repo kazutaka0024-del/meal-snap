@@ -101,15 +101,33 @@ async function analyzeFood(file) {
 const data = await response.json();
 
 if (!response.ok) {
-    result.textContent = data.error.message;
+
+    result.textContent =
+    data.error?.message || "APIエラー";
 
     cameraButton.disabled = false;
     isAnalyzing = false;
 
     return;
+
 }
 
-const text = data.candidates[0].content.parts[0].text;
+// Gemini回答チェック
+if (!data.candidates) {
+
+    console.log(data);
+
+    result.textContent =
+    "AI解析結果が取得できませんでした";
+
+    cameraButton.disabled = false;
+    isAnalyzing = false;
+
+    return;
+
+} 
+ 
+let text = data.candidates[0].content.parts[0].text;
 
 // Markdownコードブロック除去
 text = text
