@@ -304,6 +304,22 @@ function loadHistory(){
 
     dates.forEach(date => {
 
+        const today = new Date().toISOString().slice(0,10);
+
+        const yesterday = new Date();
+         yesterday.setDate(yesterday.getDate()-1);
+
+        const yesterdayString =
+         yesterday.toISOString().slice(0,10);
+
+        let displayDate = date.replaceAll("-","/");
+
+        if(date === today){
+          displayDate = `今日（${displayDate}）`;
+        }
+        else if(date === yesterdayString){
+          displayDate = `昨日（${displayDate}）`;
+        } 
 
         const dayMeals =
         meals.filter(
@@ -315,7 +331,7 @@ function loadHistory(){
         <div class="day">
 
         <h3>
-        📅 ${date}
+        📅 ${displayDate}
         </h3>
         `;
 
@@ -337,7 +353,10 @@ function loadHistory(){
 
 
             html +=
-            `<h4>${type}`;
+            `
+            <div class="meal-card">
+            <h4>${type}</h4>
+            `;
 
 
             if(list.length){
@@ -352,10 +371,10 @@ function loadHistory(){
 
                     html +=
                     `
-                    <p>
-                    ・${meal.food}
-                    ${meal.calories} kcal
-                    </p>
+                     <div class="meal-row">
+                     <span class="meal-name">${meal.food}</span>
+                     <span class="meal-calories">${meal.calories} kcal</span>
+                     </div>
                     `;
 
                 });
@@ -372,15 +391,15 @@ function loadHistory(){
 
                 html +=
                 `
-                <p>
-                未登録
-                </p>
+                 <p class="notRegistered">
+                 未登録
+                 </p>
                 `;
 
             }
 
 
-            html += "</h4>";
+            html += "</div>";
 
         });
 
@@ -403,5 +422,4 @@ function loadHistory(){
 
 }
 
-alert("loadHistory呼び出し");
 loadHistory();

@@ -31,8 +31,58 @@ button {
     color: white;
 }
 
-img {
+#preview {
     width: 100%;
-    margin-top: 20px;
+    max-width: 220px;
+    max-height: 220px;
+    height: auto;
+    margin: 20px auto 0;
+    display: block;
     border-radius: 10px;
+}
+
+/* 履歴全体 */
+#history{
+    text-align:left;
+    margin-top:20px;
+}
+
+/* 食事カード */
+.meal-card{
+    background:#f8f8f8;
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:15px;
+}
+
+/* 朝昼夕タイトル */
+.meal-card h4{
+    margin-top:0;
+}
+
+/* 一品 */
+.meal-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    margin:6px 0;
+}
+
+/* 料理名 */
+.meal-name{
+    flex:1;
+    word-break:break-word;
+}
+
+/* kcal */
+.meal-calories{
+    white-space:nowrap;
+    font-weight:bold;
+}
+
+/* 未登録 */
+.notRegistered{
+    color:#999;
+    font-style:italic;
 }
