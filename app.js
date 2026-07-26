@@ -7,6 +7,11 @@ const savePhotoButton = document.getElementById("savePhotoButton");
 let capturedFile = null;
 
 cameraButton.addEventListener("click", () => {
+
+    if (isAnalyzing) {
+        return;
+    }
+
     cameraInput.click();
 });
 
@@ -36,6 +41,9 @@ cameraInput.addEventListener("change", async (event) => {
 async function analyzeFood(file) {
 
  try {
+
+    isAnalyzing = true;
+    cameraButton.disabled = true;
 
     result.textContent = "AI解析中...";
 
@@ -95,6 +103,10 @@ savePhotoButton.style.display = "block";
     } catch (error) {
 
         result.textContent = "エラー：" + error.message;
+
+        cameraButton.disabled = false;
+        isAnalyzing = false;
+
     }
 
 }
