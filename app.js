@@ -109,14 +109,17 @@ if (!response.ok) {
     return;
 }
 
-const text =
-data.candidates[0].content.parts[0].text;
+const text = data.candidates[0].content.parts[0].text;
 
-const meal =
-JSON.parse(text);
+// Markdownコードブロック除去
+text = text
+.replace(/```json/g, "")
+.replace(/```/g, "")
+.trim();
 
-const calories =
-roundCalories(meal.calories);
+const meal = JSON.parse(text);
+
+const calories = roundCalories(meal.calories);
 
 result.textContent =
 meal.food + " : " + calories + " kcal";
