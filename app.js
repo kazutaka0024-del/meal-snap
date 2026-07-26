@@ -5,6 +5,7 @@ const result = document.getElementById("result");
 const savePhotoButton = document.getElementById("savePhotoButton");
 
 let capturedFile = null;
+let isAnalyzing = false;
 
 cameraButton.addEventListener("click", () => {
 
@@ -89,6 +90,10 @@ const data = await response.json();
 
 if (!response.ok) {
     result.textContent = data.error.message;
+
+    cameraButton.disabled = false;
+    isAnalyzing = false;
+
     return;
 }
 
@@ -99,6 +104,9 @@ const calories = Number(text);
 result.textContent = roundCalories(calories) + " kcal";
 
 savePhotoButton.style.display = "block";
+
+cameraButton.disabled = false;
+isAnalyzing = false;
 
     } catch (error) {
 
